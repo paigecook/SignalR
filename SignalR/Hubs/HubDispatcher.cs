@@ -157,6 +157,7 @@ namespace SignalR.Hubs
                         var parameter = Expression.Parameter(typeof(object));
 
                         // TODO: Cache this whole thing
+                        // Action<object> callback = result => ContinueWith((Task<T>)result, tcs);
                         var continueWithMethod = typeof(HubDispatcher).GetMethod("ContinueWith", BindingFlags.NonPublic | BindingFlags.Static)
                                                                       .MakeGenericMethod(resultType);
 
