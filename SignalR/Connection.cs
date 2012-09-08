@@ -89,6 +89,8 @@ namespace SignalR
         private Task SendMessage(string key, object value)
         {
             var serializedValue = _serializer.Stringify(PreprocessValue(value));
+            _counters.Increment(PerformanceCounters.ConnectionMessagesSent);
+            _counters.Increment(PerformanceCounters.ConnectionMessagesSentPerSecond);
             return _bus.Publish(_connectionId, key, serializedValue);
         }
 
@@ -191,8 +193,8 @@ namespace SignalR
 
             PopulateResponseState(response);
 
-            _counters.IncrementBy(PerformanceCounters.ConnectionMessagesReceived, result.Messages.Count);
-            _counters.IncrementBy(PerformanceCounters.ConnectionMessagesReceivedPerSec, result.Messages.Count);
+            _counters.IncrementBy(PerformanceCounters.ConnectionMessagesReceived, result.TotalCount);
+            _counters.IncrementBy(PerformanceCounters.ConnectionMessagesReceivedPerSec, result.TotalCount);
 
             return response;
         }
