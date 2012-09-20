@@ -48,7 +48,10 @@ namespace SignalR.SqlServer
                 using (var cmd = new SqlCommand(_maxIdSql, connection))
                 {
                     var maxId = cmd.ExecuteScalar();
-                    _lastPayloadId = maxId != null ? (long)maxId : _lastPayloadId;
+                    if(!string.IsNullOrWhitespace(maxId.ToString()))
+                    {
+                        _lastPayloadId = (long)maxId;
+                    }
                 }
             }
         }
